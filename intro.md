@@ -22,6 +22,7 @@ This specification aims to have a formal definition for all building blocks.
   - [Events](events.md)
   - [Execution Task](executionTask.md)
   - [Workflows](atomicWorkflow.md)
+  - [Batching](batching.md)
 
 # Introduction
  - TODO: Detailed goal of this document
