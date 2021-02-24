@@ -10,14 +10,13 @@ Data structure for payload. (Eg: FE model, Vehicle model)
 
 - `Boolean`: a boolean value of "true" or "false".
 - `String`: a string of text. It may contain unicode characters
-- `Integer`: .
-- `Double`: .
+- `Integer`: represents mathamatical integers
+- `Double`: 64-bit precision floating point
 - `Datetime`: ISO 8601 datetime format or utc timestamp.
-- `null`: represents missing value. Accepts value as `null`.
 - `Array`: list of ordered elements.
 - `Object`: key value data. Value can be of any of the supported data types.
 
--  TODO: Datetime format, location, polygon etc
+TODO: Datetime format, location, polygon etc
 
 ## Document Type Definition
 
@@ -25,90 +24,119 @@ Model attributes may have the following properties.
 
 **Properties:**
 
-- `type`: 
-    description: Data Type
-    required: true
-    value: Refer supported data types
-- `minLength`:
-    description: minimum number of characters allowed
-    required: false
-    value: integer
-- `maxLength`:
-    description: maximum number of characters allowed
-    required: false
-    value: integer
-- `pattern`:
-    description: Regular expression to match a valid pattern
-    required: false
-    value: valid regex
-- `enum`:
-    description: Possible values of an attribute
-    required: false
-    value: Array<String>
-- `required`:
-    description: If the attribute is required for the model to be initialized
-    required: true
-    value: boolean
+Properties in addition to standard json-schema
+
+- `nullable`:
+  - `description`: Define if this property can be null
+  - `required`: false
+  - `valueType`: boolean
+  - `default`: false
+
+## Build & Deploy
+
+```javascript
+model = ModelRegistry.build(uniqueModelName, customJsonSchema);
+model.deploy();
+```
+
+Example:
+
+```javascript
+vehicleModel = ModelRegistry.build("Vehicle", {
+    ...customJsonSchema
+  }
+})
+vehicleModel.deploy()
+
+```
 
 ## Validate
 
-  - TODO
+```javascript
+model = ModelRegistry.fetch(uniqueModelName);
+model.validate(args);
+```
 
-## Deploy
-  
-  ```javascript
-  Model.init(modelName: String, args)
-  Model.deploy()
-  ```
+Example:
 
-  Example;
-  ```javascript
-  Model.init("Vehicle", {
-    "name": {
-      "type": String,
-      "required": true,
-    }...
-  })
-  ```
+```javascript
+vehicleModel = ModelRegistry.fetch("Vehicle");
+vehicleModel.validate(args);
+```
 
-  
+## Instantiate Model
 
-## Registry
-
-Model registry will provide a set of APIs for create data instances for the models declared (create, read, update, delete) operations on a particular model.
+Set of APIs for create data instances for the models declared (create, read, update, delete) operations on a particular model.
 
 `uuid`: unique id
-`args`: a valid model payload 
-
+`args`: a valid model payload
 
 **Create**
 
 ```javascript
-ModelName modelName = new Modelname()
-modelName.create(uuid, args)
+model = ModelRegistry.fetch(uniqueModelName);
+instance = model.create(uuid, args);
+```
+
+Example:
+
+```javascript
+vehicleModel = ModelRegistry.fetch("Vehicle");
+vehicle = vehicleModel.create(uuid, args);
 ```
 
 **Read**
 
 ```javascript
-modelName.get(uuid)
+model = ModelRegistry.fetch(uniqueModelName);
+instance = model.get(uuid);
 ```
 
-**Set**
+Example:
 
 ```javascript
-modelName.set(model, data)
+vehicleModel = ModelRegistry.fetch("Vehicle");
+vehicle = vehicleModel.get(uuid);
 ```
 
 **Update**
 
 ```javascript
-modelName.update(uuid, oldModel, newModel)
+model = ModelRegistry.fetch(uniqueModelName);
+instance = model.update(uuid, args);
 ```
+
+Example:
+
+```javascript
+vehicleModel = ModelRegistry.fetch("Vehicle");
+vehicle = vehicleModel.update(uuid, args);
+```
+
+**Create or Update**
+
+```javascript
+model = ModelRegistry.fetch(uniqueModelName);
+instance = model.createOrUpdate(uuid, args);
+```
+
+Example:
+
+```javascript
+vehicleModel = ModelRegistry.fetch("Vehicle");
+vehicle = vehicleModel.createOrUpdate(uuid, args);
+```
+
 **Delete**
 
 ```javascript
-modelName.delete(uuid)
+model = ModelRegistry.fetch(uniqueModelName);
+model.delete(uuid);
 ```
 
+Example:
 
+```javascript
+vehicleModel = ModelRegistry.fetch("Vehicle");
+vehicleModel.delete(uuid);
+```
