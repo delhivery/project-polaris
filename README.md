@@ -21,6 +21,7 @@ This specification aims to have a formal definition for all building blocks.
   - [Models](models.md)
   - [Events](events.md)
   - Capabilities [TODO]
+  - Model Lifecycle & Event [TODO]
   - [Batching](batching.md)
 
 # Introduction

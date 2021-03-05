@@ -18,23 +18,34 @@ An event instance outlives the instantaneous occurrence that generated the event
 
 Developers can register an event given the models affected by the vent are pre registered
 
-Registering an event
+**Registering an event**
 
 ```javascript
-Event.register(eventName, <Model1, Model2>, <args>)
+Event.register(eventName, {Model1, Model2}, args);
+
+//example
+Event.register("OrderDelivered", M1, M2, args)
 ```
 
-Registering an event, would generate stubs for writing execution tasks
-
+**Register Event Callback**
+After registering an event, an event callback can be declared. The library will return boilerplate functions to implement on successful registration of an event callback.
 
 ```javascript
-Event.register("OrderDelivered", M1, M2)
-// The above event registeration would generate boilerplate
+Event.registerCallback(eventName)
 
-function OrderDeliveredM1(M1, const M2) {}
-function OrderDeliveredM2(const M1, M2) {}
+//returns
+eventFunctions = [
+  function eventNameForM1(M1, const M2....) {}, // execution task
+  function eventNameForM2(const M1, M2.....) {} // execution task
+]
+```
 
-// The above stubs are to be implmented and deployed
+**Deploy event callback method**
+
+Once the devs have implemented the execution task, they can be deployed
+
+```javascript
+eventFunctions.deploy()
 ```
 
 ## Event Generation
