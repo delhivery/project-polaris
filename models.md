@@ -4,7 +4,7 @@ Data structure for payload. (Eg: FE model, Vehicle model)
 
 ## Overview
 
-Each model has a lifecycle. A lifecycle of a mdoel is collection of atomic workflows chained together. Individual model owners can register their models and difine it's lifecycle.
+Each model has a lifecycle. A lifecycle of a model is a collection of atomic workflows chained together. Individual model owners can register their models and define its lifecycle.
 
 ## Supported Data Types
 

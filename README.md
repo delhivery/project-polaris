@@ -20,8 +20,8 @@ This specification aims to have a formal definition for all building blocks.
   - [Introduction](#introduction)
   - [Models](models.md)
   - [Events](events.md)
-  - Capabilities [TODO]
-  - Model Lifecycle & Event [TODO]
+  - [Lifecycle](lifecycle.md)
+  - [Interaction & Example](interaction.md)
   - [Batching](batching.md)
 
 # Introduction
