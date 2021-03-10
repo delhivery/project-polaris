@@ -16,8 +16,6 @@ Each model has a lifecycle. A lifecycle of a model is a collection of atomic wor
 - `Array`: list of ordered elements.
 - `Object`: key value data. Value can be of any of the supported data types.
 
-TODO: Datetime format, location, polygon etc
-
 ## Document Type Definition
 
 Model attributes may have the following properties.

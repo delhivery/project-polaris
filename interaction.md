@@ -1,4 +1,4 @@
-# Interaction
+# Interaction Flow
 
 ## Setup
 
@@ -12,9 +12,8 @@
 ## Execution
 
 - Generate one of the registered events
-- Internally the system figures out the state of the model in the lifecycle and executes the mapped task.
-- Updated model values are pushed to a stream.
-
-# Example
-
-- TODO
+- The systems fetches lifecycles of all the models associated with the event and figures out the current state of these lifecycles
+- If the event is associated with the current state of the lifecycles, then corresponding tasks are executed.
+- Tasks produces new image of the respective models
+- A database transaction is created for the above and commited to DB.
+- Updated model values are pushed to a stream for all applications to consume

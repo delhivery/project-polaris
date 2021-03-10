@@ -21,18 +21,17 @@ This specification aims to have a formal definition for all building blocks.
   - [Models](models.md)
   - [Events](events.md)
   - [Lifecycle](lifecycle.md)
-  - [Interaction & Example](interaction.md)
+  - [Interaction & Flow](interaction.md)
   - [Batching](batching.md)
 
 # Introduction
 
 For a point to point dispatch system, the goal is have a event driven approach. This means that our systems continuously wait for the occurrence of some external or internal event such as a mouse click, a button press, a time tick or an arrival of a data packet (streams/api). After recognizing the event, our systems react by performing the appropriate computation which may in turn trigger events for other internal software.
 
-
-Models form the building blocks and each model has a lifecycle. eg: FE model will have a lifecycle with a set of states(create, activate, punchin, punch out etc).
+Models form the building blocks and each model has a lifecycle. eg: FE model will have a lifecycle with a set of states(create, activate, punch-in, punch-out etc).
 
 An event will cause state changes in the lifecycle of a model.
 
 Each event can trigger lifecycles of models it is associated with and leads to execution of tasks required for that particular event.
 
-This document lays down the specification of a bootstrap library which governs the workflows and capabilities of different parts of point to point dispatch system.
+This document lays down the specification of a bootstrap library which provides the ability to register models, events & lifecycle and deploy it to run in an isolated environment.
