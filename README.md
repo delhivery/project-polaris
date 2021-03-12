@@ -30,8 +30,8 @@ For a point to point dispatch system, the goal is have a event driven approach. 
 
 Models form the building blocks and each model has a lifecycle. eg: FE model will have a lifecycle with a set of states(create, activate, punch-in, punch-out etc).
 
-An event will cause state changes in the lifecycle of a model.
+An event may cause state changes in the lifecycle in combination with a function/callback. In such a case, the function/callback with the event amounts to a state transition
 
-Each event can trigger lifecycles of models it is associated with and leads to execution of tasks required for that particular event.
+Each event leads to evaluation of lifecyle for validation of event (is the incoming event acceptable at current state of the lifecycle). Additionally, the lifecycle determines given the internal state and the event as to what function/callback has to be invoked
 
 This document lays down the specification of a bootstrap library which provides the ability to register models, events & lifecycle and deploy it to run in an isolated environment.

@@ -1,10 +1,18 @@
 # Models
 
-Data structure for payload. (Eg: FE model, Vehicle model)
+## Definition
 
-## Overview
+Models are the building blocks of the system. (Eg: FE, Vehicle, Package Model).
 
-Each model has a lifecycle. A lifecycle of a model is a collection of atomic workflows chained together. Individual model owners can register their models and define its lifecycle.
+Any object which has meta data can be declared as new model in the system. Model does not maintain any kind of relationship (one to one, one to many etc). Relationships are to be maintained at application level.
+
+## Registration
+
+Developers register their model schema in the system via model registration service. A model schema can be updated by adding new properties or removing old ones. Modifying data types of properties is not supported.
+
+## Model Instance
+
+Instance of a registered model commited to the database.
 
 ## Supported Data Types
 
@@ -15,126 +23,3 @@ Each model has a lifecycle. A lifecycle of a model is a collection of atomic wor
 - `Datetime`: ISO 8601 datetime format or utc timestamp.
 - `Array`: list of ordered elements.
 - `Object`: key value data. Value can be of any of the supported data types.
-
-## Document Type Definition
-
-Model attributes may have the following properties.
-
-**Properties:**
-
-Properties in addition to standard json-schema
-
-- `nullable`:
-  - `description`: Define if this property can be null
-  - `required`: false
-  - `valueType`: boolean
-  - `default`: false
-
-## Build & Deploy
-
-```javascript
-model = ModelRegistry.build(uniqueModelName, customJsonSchema);
-model.deploy();
-```
-
-Example:
-
-```javascript
-vehicleModel = ModelRegistry.build("Vehicle", {
-    ...customJsonSchema
-  }
-})
-vehicleModel.deploy()
-
-```
-
-## Validate
-
-```javascript
-model = ModelRegistry.fetch(uniqueModelName);
-model.validate(args);
-```
-
-Example:
-
-```javascript
-vehicleModel = ModelRegistry.fetch("Vehicle");
-vehicleModel.validate(args);
-```
-
-## Instantiate Model
-
-Set of APIs for create data instances for the models declared (create, read, update, delete) operations on a particular model.
-
-`uuid`: unique id
-`args`: a valid model payload
-
-**Create**
-
-```javascript
-model = ModelRegistry.fetch(uniqueModelName);
-instance = model.create(uuid, args);
-```
-
-Example:
-
-```javascript
-vehicleModel = ModelRegistry.fetch("Vehicle");
-vehicle = vehicleModel.create(uuid, args);
-```
-
-**Read**
-
-```javascript
-model = ModelRegistry.fetch(uniqueModelName);
-instance = model.get(uuid);
-```
-
-Example:
-
-```javascript
-vehicleModel = ModelRegistry.fetch("Vehicle");
-vehicle = vehicleModel.get(uuid);
-```
-
-**Update**
-
-```javascript
-model = ModelRegistry.fetch(uniqueModelName);
-instance = model.update(uuid, args);
-```
-
-Example:
-
-```javascript
-vehicleModel = ModelRegistry.fetch("Vehicle");
-vehicle = vehicleModel.update(uuid, args);
-```
-
-**Create or Update**
-
-```javascript
-model = ModelRegistry.fetch(uniqueModelName);
-instance = model.createOrUpdate(uuid, args);
-```
-
-Example:
-
-```javascript
-vehicleModel = ModelRegistry.fetch("Vehicle");
-vehicle = vehicleModel.createOrUpdate(uuid, args);
-```
-
-**Delete**
-
-```javascript
-model = ModelRegistry.fetch(uniqueModelName);
-model.delete(uuid);
-```
-
-Example:
-
-```javascript
-vehicleModel = ModelRegistry.fetch("Vehicle");
-vehicleModel.delete(uuid);
-```

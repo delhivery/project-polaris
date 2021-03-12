@@ -6,11 +6,13 @@ The lifecycle of any object can be thought of as a state machine such that each 
 
 Business/Product can declare the lifecycle of each model in the system and events associated with each state of the lifecycle. The events may cause change in state of a model's lifecycle
 
-A lifecycle has to be declared for every model. A model's lifecycle is created by chaining together atomic workflows.
+## Definition
+
+A lifecycle is a suquence of events, states and transitions which allows us to dicate what happens to a model from inception to termination in our system.
 
 ## Event and Lifecycle
 
-When an event is generated, the system figures out what's the current state of the model is and validates if the incoming event can be trigged in current state. If yes then the corresponding task for the event is executed which may cause a change in state of the model.
+An event causes the evaluation of lifecycle to validate if the said event is acceptable at the current state of the lifecycle or not. And if the event is acceptable, lifecycle will determine which function to invoke based on it's internal state
 
 An event can be valid for multiple states of a lifecycle. For example:
 'cancelOrder' event will have to be attached to all states of a lifecycle if cancellation if to be allowed at all times during the lifecycle of an order.
