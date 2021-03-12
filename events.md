@@ -12,7 +12,23 @@ An event instance outlives the instantaneous occurrence that generated the event
 
 Events are objects which describe some action that has occured along with associated data. Events don't directly update models. Functions/Callbacks carry out operations in response to events which may or not may not produce a new version of the model.
 
-The system generating events is decoupled from the system consuming the events.
+## Event Storage
 
+Events are immutable and stored as append only operation. Events can arrive out of order in a distributed system and application layer would have to implement appropriately.
 
+## Event generation
 
+The system generating events is decoupled from the system consuming the events. 
+
+## Event & Models
+
+Events can have associated data with them which can be Models or free text arguments.
+
+## Event validation
+
+- Checks on events
+- Event is correctly defined?
+
+## Event callbacks
+
+Events will have registered callbacks/functions which will get triggered if the incoming event is valid at the current state of the lifecycle.

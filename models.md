@@ -8,7 +8,7 @@ Any object which has meta data can be declared as new model in the system. Model
 
 ## Registration
 
-Developers register their model schema in the system via model registration service. A model schema can be updated by adding new properties or removing old ones. Modifying data types of properties is not supported.
+Developers register their model schema in the system via model registration service. A model schema can be updated by adding new properties or removing old ones. Modifying data types of properties is not allowed.
 
 ## Model Instance
 
