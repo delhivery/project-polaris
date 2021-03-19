@@ -18,11 +18,11 @@ This specification aims to have a formal definition for all building blocks.
 ## Table of Contents
 
   - [Introduction](#introduction)
+  - [Dispatcher Resource Names](address.md)
   - [Models](models.md)
   - [Events](events.md)
+  - [Callbacks](callbacks.md)
   - [Lifecycle](lifecycle.md)
-  - [Interaction & Flow](interaction.md)
-  - [Batching](batching.md)
 
 # Introduction
 
