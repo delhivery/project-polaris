@@ -8,7 +8,7 @@ Delhivery has multiple dispatch models used to service first-mile, mid-mile, car
 
 This adds to the burden of the operational staff where they have to manage multiple applications and workflows for each respective business product.
 
-We try to simplify the above class of problems by reimaging dispatch as a point to point service, where shipments have to be delivered from a source location to a target destination within a stipulated SLAs/time window.
+We try to simplify the above class of problems by reimagining dispatch as a point to point service, where shipments have to be delivered from a source location to a target destination within a stipulated SLAs/time window.
 
 In the current systems, the in-field activities are tightly coupled with the field activities, there is an overlap of the ops / business functionality (fm, lm etc) with the in-field tasks. One of the key objectives is to decouple these dependencies and model field apps to manage tasks irrespective of how they are administered
 
@@ -32,6 +32,6 @@ Models form the building blocks and each model has a lifecycle. eg: FE model wil
 
 An event may cause state changes in the lifecycle in combination with a function/callback. In such a case, the function/callback with the event amounts to a state transition
 
-Each event leads to evaluation of lifecyle for validation of event (is the incoming event acceptable at current state of the lifecycle). Additionally, the lifecycle determines given the internal state and the event as to what function/callback has to be invoked
+Each event leads to evaluation of lifecycle for validation of event (is the incoming event acceptable at current state of the lifecycle). Additionally, the lifecycle determines given the internal state and the event as to what function/callback has to be invoked
 
 This document lays down the specification of a bootstrap library which provides the ability to register models, events & lifecycle and deploy it to run in an isolated environment.

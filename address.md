@@ -25,9 +25,9 @@ The service in which the resource is located. Can be one of:
 The tenant in which the resource is located. Same as tenant_id provided by User Management System
 
 Examples:
-- delhviery
-- mituj
-- amazon
+- Delhivery
+- Mituj
+- Amazon
 
 ### Resource Type
 The service namespace that identifies the Dispatcher component. For example, Package for Model, CollectCod for Event.

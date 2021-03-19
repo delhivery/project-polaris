@@ -2,7 +2,7 @@
 
 ## Definition
 
-The dispatcher system operates over data sets, events and states. These data sets can be classified into discrete catogories, each of which can be represented as a model. Common properties for models are:
+The dispatcher system operates over data sets, events and states. These data sets can be classified into discrete categories, each of which can be represented as a model. Common properties for models are:
 - Each model supports CRUD operations over instances of the model
 - Each model stores corresponding metadata defining the attributes of the model
 - Each valid model has a unique name and address drn:model:<tenant>:<model_name>

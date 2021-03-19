@@ -2,7 +2,7 @@
 
 ## Overview
 
-Callbacks are fully stateless functions that can be invoked by events. Each callback is a function that is not bound to any identifier (class/model). They are akin to lambda or anonymous functions in any programming langauge.
+Callbacks are fully stateless functions that can be invoked by events. Each callback is a function that is not bound to any identifier (class/model). They are akin to lambda or anonymous functions in any programming language.
 
 Each callback function specifies event(s) that it can be invoked on.
 
@@ -55,12 +55,12 @@ const CoDCollectedCallbackPackage: callbackFunction<Package, CoDCollectedEvent> 
 		throw InsufficientCoDAmount();
 	}
 
-	return {model: updatedPacakge};
+	return {model: updatedPackage};
 };
 
 const CoDCollectedCallbackFieldExecutive: callbackFunction<Package, CoDCollectedEvent> = (const fe: FieldExecutive, const event: CoDCollectedEvent): callbackReturn<FieldExecutive> {
 	let updatedExecutive: FieldExecutive = fe;
-	fe.cod_collected += event.amout;
+	fe.cod_collected += event.amount;
 
 	if (fe.cod_collected > 10000)
 		return {model: fe, event: FELimitExceededEvent(fe)};
