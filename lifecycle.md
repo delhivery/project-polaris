@@ -10,27 +10,27 @@ Business/Product can declare the lifecycle of each model in the system and event
 
 A lifecycle is a sequence of events associated with a model that governs the actions available (or to be performed) on instances of the model. Additionally, lifecycles can be chained to create larger lifecycles.
 
-
-
 ```ts
 // DSL for lifecycle
+
 {
-  "name": "string",
-  "start": "<event_drn>",
+  "drn": "string",
+  "start": "event_drn",
   "guard": {
-    "name": "string",
-    "expression": "JSONPath"
-  },
-  "<event_drn>": {
-    "callback": "<callback_drn>",
+    "expression": "JSONPath",
+    "value": "string" | "boolean" | "number"
+  }
+  "event_drn": {
     "next": [
-      "<event_drn>",
-      "<lifecycle_drn>",
+      ..."event_drns"
     ],
     "emit": [
-      "<event_drn>",
+      ..."event_drns"
+    ],
+    "callback": "callback_drn" | [
+      ..."filecycle_drn",
     ]
-  },
+  }
 }
 
 // Constraints on events
@@ -68,7 +68,7 @@ loopback.on("event", (instance, event) => {
 
   lifecycle = instance.model.lifecycle()
 
-  if (!can_process_lifecycle(lifecycle, history)) 
+  if (!can_process_lifecycle(lifecycle, history))
     throw UnexpectedEvent("Event is not supported at its current state in lifecycle");
 
   eventDefinition = lifecycle[event];
@@ -81,7 +81,6 @@ loopback.on("event", (instance, event) => {
   throw EventExecutionFailure("Error executing event: ", error);
 });
 ```
-
 
 ### Capability
 
