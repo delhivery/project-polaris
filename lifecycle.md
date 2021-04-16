@@ -14,23 +14,28 @@ A lifecycle is a sequence of events associated with a model that governs the act
 // DSL for lifecycle
 
 {
-  "drn": "string",
-  "start": "event_drn",
-  "guard": {
-    "expression": "JSONPath",
-    "value": "string" | "boolean" | "number"
-  }
-  "event_drn": {
-    "next": [
-      ..."event_drns"
-    ],
-    "emit": [
-      ..."event_drns"
-    ],
-    "callback": "callback_drn" | [
-      ..."filecycle_drn",
-    ]
-  }
+	"drn": "<lifecycle_drn>",
+	"start": "<event_drn>",
+	"events": {
+		"<event_drn>": {
+			"task": "<callback_drn>",
+			"choice": [
+				{
+					"expression": "JSONPath",
+					"emit": "<lifecycle_drn> or <event_drn>"
+				}
+				...
+			],
+			"next": [
+				"<event_drn>"
+				...
+			],
+			"emit": [
+				"<event_drn>"
+				...
+			]
+		}
+	}
 }
 
 // Constraints on events
