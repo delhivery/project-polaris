@@ -14,14 +14,21 @@ Events are formally defined as an arbitrary tag, along with the arguments suppor
 
 ```
 interface Argument {
-	model: Model[];
-	[key: string]: ValueType;
+	id: string;
+	[key: string]: any;
 };
 
 interface Event {
+	event: EventDrn;
+	models: {
+		[key: ModelDrn]: Argument;
+	}
+};
+
+interface EventDefinition {
 	name: string;
-	arguments: Argument;
-}
+	models: ModelDrn[];
+};
 ```
 
 Each event can trigger one or more callbacks associated with the event. 

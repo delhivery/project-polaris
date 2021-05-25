@@ -10,36 +10,30 @@ Business/Product can declare the lifecycle of each model in the system and event
 
 A lifecycle is a sequence of events associated with a model that governs the actions available (or to be performed) on instances of the model. Additionally, lifecycles can be chained to create larger lifecycles.
 
-
-
 ```ts
-// DSL for lifecycle
-{
-  "name": "string",
-  "start": "<event_drn>",
-  "guard": {
-    "name": "string",
-    "expression": "JSONPath"
-  },
-  "<event_drn>": {
-    "callback": "<callback_drn>",
-    "next": [
-      "<event_drn>",
-      "<lifecycle_drn>",
-    ],
-    "emit": [
-      "<event_drn>",
-    ]
-  },
+interface ChoiceDef {
+	expression: JsonPath;
+	value: string | boolean | number | null;
+	emit: EventDrn[];
 }
 
-// Constraints on events
-for(const eventDefinition: lifecycle.events) {
-  nextEvents = [event_drn for event in eventDefinition.next] + [lifecycle.start for lifecycle in eventDefinition.next];
+interface EventDef {
+	task: CallbackDrn;
+	choice: ChoiceDef[];
+	next: EventDrn[];
+	emit: EventDrn[];
+}
 
-  if (nextEvents.length() != set(nextEvents).length) {
-    throw Error("Invalid event definition. Multiple executions for event found in chain");
-  }
+interface Lifecycle {
+	drn: LifecycleDrn;
+	modelDrn: ModelDrn;
+	start: EventDrn;
+	events: EventDef;
+}
+
+interface LifecycleInstance extends Lifecycle {
+	lastEvent: EventDrn;
+	lck: boolean;
 }
 ```
 
@@ -52,50 +46,51 @@ When an event is generated, the history of all events are retrieved for the inst
 To reduce the complexity of re-running the historical events, history of an object can be serialized/deserialized as a state store.
 
 ```ts
-const can_process_lifecycle = (lifecycle, events) => {
-  next_event = lifecycle.start;
-
-  if (events.length == 0) return true;
-
-  if (events[0] != next_event) return false;
-
-  return process_lifecycle(lifecycle[events[0]], events[1:]);
+const isValidNextEvent = (lifecycle, event): boolean => {
+	if (lifecycle.lastEvent === undefined) {
+		return event === lifecycle.start;
+	} else {
+		return (
+			lifecycle.events[lifecycle.lastEvent] !== undefined &&
+			(lifecycle.events[lifecycle.lastEvent].next.includes(event) ||
+				lifecycle.events[lifecycle.lastEvent].choice
+					.map((v) => {
+						return v.emit;
+					})
+					.includes(event))
+		);
+	}
 };
 
-loopback.on("event", (instance, event) => {
-  history = instance.event_history();
-  history.append(event);
+const evaluateChoices = async (choices, modelInstance): Promise<string> => {
+	for (const choice of choices) {
+		try {
+			if (
+				choice.expression === undefined ||
+				choice.value === query(modelInstance, choice.expression)[0]
+			) {
+				return await this.next(choice.emit, modelInstance);
+			}
+		} catch (e) {
+			//
+		}
+	}
+	throw new InvalidOperationError();
+};
 
-  lifecycle = instance.model.lifecycle()
-
-  if (!can_process_lifecycle(lifecycle, history)) 
-    throw UnexpectedEvent("Event is not supported at its current state in lifecycle");
-
-  eventDefinition = lifecycle[event];
-
-  if (error = eventDefinition["callback"]()) {
-    instance.event_history(history);
-    return;
-  }
-
-  throw EventExecutionFailure("Error executing event: ", error);
-});
-```
-
-
-### Capability
-
-Since lifecycles can contain other lifecycles, we can guard optional sub-lifecycles by abstracting them behind guard conditions.
-
-```ts
-loopback.on(..., {
-
-  ...
-  eventDefinition = lifecycle[event];
-
-  if (eventDefinition.type == 'lifecycle' and eventDefinition.guard and eval(eventDefinition.guard.expression)) {
-    // invoke sub-lifecycle
-  }
-  throw GuardConditionFailed("Error executing event: Object lacks capability ", eventDefinition.guard.name)
-});
+const next = async (event, lifecycle, modelInstance) => {
+	if (!isValidNextEvent(event)) {
+		throw new InvalidEventError(event);
+	}
+	lifecycle.lastEvent = event;
+	const eventDef = lifecycle.events[event];
+	if (eventDef.task) {
+		lockOrThrowErrorIfAlreadyLocked();
+		return eventDef.task;
+	} else if (eventDef.choice && eventDef.choice.length > 0) {
+		return await this.evaluateChoices(eventDef.choice, modelInstance);
+	} else {
+		throw new InvalidOperationError();
+	}
+};
 ```
