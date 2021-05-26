@@ -25,7 +25,15 @@ The service in which the resource is located. Can be one of:
 
 ### Tenant
 
-The tenant in which the resource is located. Same as tenant_id provided by User Management System. Currently supported tenant:
+The tenant in which the resource is located. Same as tenant_id provided by User Management System.
+
+Examples:
+
+-   Delhivery
+-   Mituj
+-   Amazon
+
+Currently supported tenant:
 
 -   delhivery
 
