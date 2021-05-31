@@ -11,8 +11,13 @@ Business/Product can declare the lifecycle of each model in the system and event
 A lifecycle is a sequence of events associated with a model that governs the actions available (or to be performed) on instances of the model. Additionally, lifecycles can be chained to create larger lifecycles.
 
 ```ts
+enum Comparator = {
+	"eq", "ne", "lte", "gte", "gt", "lt"
+}
+
 interface ChoiceDef {
 	expression: JsonPath;
+	compare: Comparator;
 	value: string | boolean | number | null;
 	emit: EventDrn[];
 }
@@ -33,7 +38,7 @@ interface Lifecycle {
 
 interface LifecycleInstance extends Lifecycle {
 	lastEvent: EventDrn;
-	lck: boolean;
+	lock: boolean;
 }
 ```
 

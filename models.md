@@ -6,7 +6,7 @@ The dispatcher system operates over data sets, events and states. These data set
 - Each model supports CRUD operations over instances of the model
 - Each model stores corresponding metadata defining the attributes of the model
 - Each valid model has a unique name and address drn::model::<tenant>::<model_name>
-- Each valid model instance has a unique address arn::model::<tenant>::<model_name>//<model_id>
+- Each valid model instance has a unique address drn::model::<tenant>::<model_name>//<model_id>
 
 
 ## Structure
@@ -16,7 +16,7 @@ Each model is represented via a JSONSchema. Additionally, each model has two res
 Each model can be defined as class which implements the following interface
 ```ts
 interface Model {
-	name: string;
+	id: string;
 	version: datetime;
 	props: JsonSchema;
 };
@@ -26,7 +26,7 @@ interface Model {
 #### Sample Schema
 ```json
 {
-	"name": "drn::model::<tenant>::<model_name>",
+	"id": "drn::model::<tenant>::<model_name>",
 	"version": 1234,
 	"props": {
 		"title": "<model_name>",
