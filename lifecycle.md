@@ -36,9 +36,11 @@ interface Lifecycle {
 	events: EventDef;
 }
 
-interface LifecycleInstance extends Lifecycle {
-	lastEvent: EventDrn;
-	lock: boolean;
+interface ModelInstance {
+	__lc_state: EventDrn;
+	__lc_ver: number;
+	__lc: LifeCycle;
+	[key:string]: any;
 }
 ```
 
@@ -79,14 +81,18 @@ When an event is generated, the history of all events are retrieved for the inst
 To reduce the complexity of re-running the historical events, history of an object can be serialized/deserialized as a state store.
 
 ```ts
-const isValidNextEvent = (lifecycle, event): boolean => {
-	if (lifecycle.lastEvent === undefined) {
-		return event === lifecycle.start;
+const isValidNextEvent = (event, modelInstance): boolean => {
+	if (modelInstance.__lc_state === undefined) {
+		return event === modelInstance.__lc.start;
 	} else {
 		return (
-			lifecycle.events[lifecycle.lastEvent] !== undefined &&
-			(lifecycle.events[lifecycle.lastEvent].next.includes(event) ||
-				lifecycle.events[lifecycle.lastEvent].choice
+			modelInstance.__lc.events[modelInstance.__lc_state] !== undefined &&
+			(modelInstance.__lc.events[modelInstance.__lc_state].next.includes(
+				event
+			) ||
+				lifecyclemodelInstance.__lc.events[
+					modelInstance.__lc_state
+				].choice
 					.map((v) => {
 						return v.emit;
 					})
@@ -96,12 +102,62 @@ const isValidNextEvent = (lifecycle, event): boolean => {
 };
 
 const evaluateChoices = async (choices, modelInstance): Promise<string> => {
+	const evaluate = (modelInstance: any, choice: ChoiceDef): boolean => {
+		if (choice.expression === undefined) return true;
+
+		if (modelInstance !== undefined) {
+			switch (choice.compare) {
+				case "eq":
+				case undefined:
+					return (
+						choice.value ===
+						query(modelInstance, choice.expression)[0]
+					);
+
+				case "gt":
+					return (
+						choice.value !== null &&
+						choice.value >
+							query(modelInstance, choice.expression)[0]
+					);
+
+				case "gte":
+					return (
+						choice.value !== null &&
+						choice.value >=
+							query(modelInstance, choice.expression)[0]
+					);
+
+				case "lt":
+					return (
+						choice.value !== null &&
+						choice.value <
+							query(modelInstance, choice.expression)[0]
+					);
+
+				case "lte":
+					return (
+						choice.value !== null &&
+						choice.value <=
+							query(modelInstance, choice.expression)[0]
+					);
+
+				case "ne":
+					return (
+						choice.value !==
+						query(modelInstance, choice.expression)[0]
+					);
+
+				default:
+					return false;
+			}
+		}
+		return false;
+	};
+
 	for (const choice of choices) {
 		try {
-			if (
-				choice.expression === undefined ||
-				choice.value === query(modelInstance, choice.expression)[0]
-			) {
+			if (evaluate(modelInstance, choice)) {
 				return await this.next(choice.emit, modelInstance);
 			}
 		} catch (e) {
@@ -111,14 +167,12 @@ const evaluateChoices = async (choices, modelInstance): Promise<string> => {
 	throw new InvalidOperationError();
 };
 
-const next = async (event, lifecycle, modelInstance) => {
-	if (!isValidNextEvent(event)) {
+const next = async (event, modelInstance) => {
+	if (!isValidNextEvent(event, modelInstance)) {
 		throw new InvalidEventError(event);
 	}
-	lifecycle.lastEvent = event;
-	const eventDef = lifecycle.events[event];
+	const eventDef = modelInstance.__lc.events[event];
 	if (eventDef.task) {
-		lockOrThrowErrorIfAlreadyLocked();
 		return eventDef.task;
 	} else if (eventDef.choice && eventDef.choice.length > 0) {
 		return await this.evaluateChoices(eventDef.choice, modelInstance);
