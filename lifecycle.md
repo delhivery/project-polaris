@@ -117,29 +117,29 @@ const evaluateChoices = async (choices, modelInstance): Promise<string> => {
 				case "gt":
 					return (
 						choice.value !== null &&
-						choice.value >
-							query(modelInstance, choice.expression)[0]
+						query(modelInstance, choice.expression)[0] >
+							choice.value
 					);
 
 				case "gte":
 					return (
 						choice.value !== null &&
-						choice.value >=
-							query(modelInstance, choice.expression)[0]
+						query(modelInstance, choice.expression)[0] >=
+							choice.value
 					);
 
 				case "lt":
 					return (
 						choice.value !== null &&
-						choice.value <
-							query(modelInstance, choice.expression)[0]
+						query(modelInstance, choice.expression)[0] <
+							choice.value
 					);
 
 				case "lte":
 					return (
 						choice.value !== null &&
-						choice.value <=
-							query(modelInstance, choice.expression)[0]
+						query(modelInstance, choice.expression)[0] <=
+							choice.value
 					);
 
 				case "ne":
