@@ -1,6 +1,6 @@
 # Project Polaris
 
-Specification for Dispatch Allocation Service
+Specification for event driven dispatcher
 
 ## Overview
 
@@ -15,23 +15,26 @@ In the current systems, the in-field activities are tightly coupled with the fie
 This specification aims to have a formal definition for all building blocks.
 
 
-## Table of Contents
+## Project Polaris Specification
 
-  - [Introduction](#introduction)
-  - [Dispatcher Resource Names](address.md)
-  - [Models](models.md)
-  - [Events](events.md)
-  - [Callbacks](callbacks.md)
-  - [Lifecycle](lifecycle.md)
+  Spec can be found here:
 
-# Introduction
+||Latest Release|
+|:---|:-----:|
+| Core Specification |[master](https://github.com/delhivery/project-polaris/blob/main/spec.md)|
 
-For a point to point dispatch system, the goal is have a event driven approach. This means that our systems continuously wait for the occurrence of some external or internal event such as a mouse click, a button press, a time tick or an arrival of a data packet (streams/api). After recognizing the event, our systems react by performing the appropriate computation which may in turn trigger events for other internal software.
+## Contribution guide
 
-Models form the building blocks and each model has a lifecycle. eg: FE model will have a lifecycle with a set of states(create, activate, punch-in, punch-out etc).
+We would love to get feedback and improvements on this project. Please read how to [contribute](https://github.com/delhivery/project-polaris/blob/main/CONTRIBUTING.md) via issues and pull requests.
 
-An event may cause state changes in the lifecycle in combination with a function/callback. In such a case, the function/callback with the event amounts to a state transition
+## Code of Conduct
 
-Each event leads to evaluation of lifecycle for validation of event (is the incoming event acceptable at current state of the lifecycle). Additionally, the lifecycle determines given the internal state and the event as to what function/callback has to be invoked
+This project adheres to a [code of conduct](https://github.com/delhivery/project-polaris/blob/main/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
 
-This document lays down the specification of a bootstrap library which provides the ability to register models, events & lifecycle and deploy it to run in an isolated environment.
+## License
+
+[Apache 2.0](https://opensource.org/licenses/Apache-2.0)
+
+Copyright (c) 2021-present, Delhivery Pvt Ltd
+
+
