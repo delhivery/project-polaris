@@ -2,7 +2,7 @@
 
 ## Overview
 
-An event is something that happens that can affect the system. An event refers to a type of occurrence rather than any concrete instance of that occurrence. For example,  a scan is an event on a container, but each individual scan (GI/Outbound) is not an event but a concrete instance of that occurrence.
+An event is something that happens that can affect the system. An event refers to a type of occurrence rather than any concrete instance of that occurrence. For example, a scan is an event on a container, but each individual scan (GI/Outbound) is not an event but a concrete instance of that occurrence.
 
 An event can have associated parameters, allowing the event instance to convey not only the occurrence of an incidence of interest but also the quantitative information regarding that occurrence. For example, a scan event generated on scanning a barcode has associated parameters that convey the participants involved.
 
@@ -12,19 +12,35 @@ An event instance outlives the instantaneous occurrence that generated the event
 
 Events are formally defined as an arbitrary tag, along with the arguments supported by the event. A interface representing event can be modeled as
 
-```
+```ts
+type ValueType =
+	| string
+	| number
+	| geopoint
+	| currency
+	| boolean
+	| array
+	| object;
+
 interface Argument {
-	model: Model[];
+	id: string;
 	[key: string]: ValueType;
-};
+}
 
 interface Event {
+	event: EventDrn;
+	models: {
+		[key: ModelDrn]: Argument;
+	};
+}
+
+interface EventDefinition {
 	name: string;
-	arguments: Argument;
+	models: ModelDrn[];
 }
 ```
 
-Each event can trigger one or more callbacks associated with the event. 
+Each event can trigger one or more callbacks associated with the event.
 
 ## Event creation
 
